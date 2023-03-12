@@ -1,47 +1,23 @@
-import copy
-import time
 import serial
 from pycaw.pycaw import AudioUtilities
+import time
 
-groups = [
-    ["Music", None, ["Spotify.exe"], []],
-    ["Browsers", None, ["firefox.exe", "msedge.exe"], []],
-    ["Other", None, [], []]
-]
 def scan_audio_lines():
     sessions = AudioUtilities.GetAllSessions()
-    output = [[], []]
 
     for session in sessions:
         if session.Process is not None:
             name = session.Process.name()
-            output[0].append(name)
-            output[1].append(session)
+            print(name)
+            for x in range(len(lists)):
+                if name in lists[x][2]:
+                    lists[x][3].append([name, session])
 
-    return output
+lists = [["Spotify", None, ["Spotify.exe"], []],
+         ["Discord", None, ["LEGOSTARWARSSKYWALKERSAGA_DX11.exe"], []],
+         ["Browsers", None, ["firefox.exe", "msedge.exe"], []]]
 
-def append_audio_lines(def_lines):
-    lines = [list(row) for row in def_lines]
-    temp_lines = [list(row) for row in def_lines]
-
-    for x in range(len(groups)):
-        temp_append = []
-
-        for y in range(len(lines[0])):
-            if lines[0][y] in groups[x][2]:
-                if lines[0][y] in temp_lines[0]:
-                    temp_lines[0][y] = None
-                    temp_lines[1][y] = None
-
-                    temp_append.append([lines[0][y], lines[1][y]])
-        groups[x][3] = temp_append
-
-    temp_append = []
-    for y in range(len(temp_lines[0])):
-        if temp_lines[0][y] is not None:
-            temp_append.append([temp_lines[0][y], temp_lines[1][y]])
-
-    groups[2][3] = temp_append
+scan_audio_lines()
 
 while True:
     try:
@@ -52,16 +28,15 @@ while True:
     if Serial is not None:
         print("Device Connected")
         while True:
+
             try:
                 State = Serial.isOpen()
             except AttributeError:
                 break
 
             if State:
-                audio_lines = scan_audio_lines()
-                append_audio_lines(audio_lines)
 
-                print(groups)
+                print(lists)
 
                 try:
                     message = Serial.readline().decode('utf-8')
@@ -73,11 +48,11 @@ while True:
                     message = message.replace('\r\n', '')
                     if len(message) > 0:
                         message = message.split(': ')
-                        for list_ in groups:
+                        for list_ in lists:
                             if message[0] in list_[0]:
                                 list_[1] = message[1]
 
-            for item in groups:
+            for item in lists:
                 if item[1] is not None:
                     volume = int(item[1]) / 100
                     lines_ = item[3]
