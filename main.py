@@ -20,6 +20,17 @@ def scan_audio_lines():
 
     return output
 
+def log_message():
+    message = ""
+    for item in groups:
+        temp = []
+
+        for lines in item[3]: temp.append(lines[0])
+
+        message += f" - {item[0]} | {item[1]}% | [{temp}]\n"
+
+    print(message)
+
 def append_audio_lines(def_lines):
     lines = [list(row) for row in def_lines]
     temp_lines = [list(row) for row in def_lines]
@@ -61,7 +72,7 @@ while True:
                 audio_lines = scan_audio_lines()
                 append_audio_lines(audio_lines)
 
-                print(groups)
+                log_message()
 
                 try:
                     message = Serial.readline().decode('utf-8')
