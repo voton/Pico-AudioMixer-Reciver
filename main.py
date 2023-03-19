@@ -56,7 +56,7 @@ def append_audio_lines(def_lines):
 
 while True:
     try:
-        Serial = serial.Serial("COM4", 19200, timeout=1)
+        Serial = serial.Serial("COM3", 19200, timeout=1)
     except serial.SerialException:
         Serial = None
 
@@ -66,6 +66,7 @@ while True:
             try:
                 State = Serial.isOpen()
             except AttributeError:
+                State = False
                 break
 
             if State:
