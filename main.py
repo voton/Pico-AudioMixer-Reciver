@@ -15,6 +15,7 @@ while True:
                 try:
                     message = Serial.readline().decode('utf-8')
                     if len(message) > 0:
+                        client.ScanAudioLines()
                         client.GetVolume(message)
                         client.LogMessage()
                         client.SetVolume()

@@ -9,11 +9,10 @@ def load_config(file):
 
 class Client:
     def __init__(self):
-        self.apps = self.ScanAudioLines()
+        self.apps = None
         self.lines = load_config('audio_config')
 
-        self.SortAudioLines()
-
+        self.ScanAudioLines()
     def ScanAudioLines(self):
         sessions = AudioUtilities.GetAllSessions()
         output = []
@@ -22,9 +21,14 @@ class Client:
             if session.Process is not None:
                 output.append([session.Process.name(), session])
 
-        return output
+        self.apps = output
+        self.SortAudioLines()
     def SortAudioLines(self):
         lines = self.lines
+        for line in lines:
+            print(line)
+            line['active_apps'] = []
+
         apps = [list(row) for row in self.apps]
         temp = [list(row) for row in self.apps]
 
@@ -60,4 +64,6 @@ class Client:
     def LogMessage(self):
         print("Audio logs:")
         for line in self.lines:
-            print(f" - {line['name'].replace('_', ' ')} | {line['volume']}%")
+            temp = []
+            for app in line['active_apps']: temp.append(app.Process.name())
+            print(f" - {line['name'].replace('_', ' ')} | {line['volume']}% | {temp}")
