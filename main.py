@@ -6,16 +6,12 @@ client = api.Client()
 config = api.load_config('config')
 
 while True:
-    try: Serial = serial.Serial(config['port'], 19200, timeout=1)
-    except serial.SerialException: Serial = None
-
-    if Serial is not None:
+    try: 
+        Serial = serial.Serial(config['port'], 19200, timeout=1)
         print('Device Detected')
         while True:
-            try: State = Serial.isOpen()
-            except AttributeError: State = False
-
-            if State:
+            try: 
+                State = Serial.isOpen()
                 try:
                     message = Serial.readline().decode('utf-8')
                     if len(message) > 0:
@@ -23,10 +19,11 @@ while True:
                         client.LogMessage()
                         client.SetVolume()
                 except serial.SerialException:
-                    print("Cannot connect to the device")
+                    print("Device is busy")
                     break
-            else:
+            except AttributeError: 
                 print("Cannot connect to the device")
-    else:
+                break
+    except serial.SerialException:
         print("Device is not detected")
         time.sleep(2.5)
