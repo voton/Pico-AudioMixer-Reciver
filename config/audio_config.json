@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Line_one",
+    "volume": "None",
+    "white_list": [
+        "Spotify.exe"
+    ],
+    "active_apps": []
+  },
+  {
+    "name": "Line_two",
+    "volume": "None",
+    "white_list": [
+        "firefox.exe", 
+        "msedge.exe"
+    ],
+    "active_apps": []
+  },
+  {
+    "name": "Line_three",
+    "volume": "None",
+    "white_list": [
+        "Discord.exe"
+    ],
+    "active_apps": []
+  },
+  {
+    "name": "Line_four",
+    "volume": "None",
+    "white_list": [],
+    "active_apps": []
+  }
+]
